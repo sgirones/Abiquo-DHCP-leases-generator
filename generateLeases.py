@@ -34,7 +34,13 @@
 
 import os
 def main():
-    c = os.popen('mysql kinton -e "select i.mac, i.name, IF(v.default_network,v.default_network,0), IF(i.configureGateway,i.configureGateway,0), i.ip, IF(n.gateway,n.gateway,0), IF(n.netmask,n.netmask,0), IF(n.primary_dns,n.primary_dns,0), IF(n.secondary_dns,n.secondary_dns,0) from ip_pool_management i, rasd_management r, network_configuration n, vlan_network v where i.idManagement = r.idManagement AND r.idVM IS NOT NULL AND i.vlan_network_id = v.vlan_network_id AND v.network_configuration_id = n.network_configuration_id;"')
+
+    mysql_c = 'mysql kinton'
+    #If you need credentials, uncomment this line and change user and password.
+    #mysql_c = 'mysql kinton -uROOT -pPASSWORD'
+
+
+    c = os.popen(mysql_c + ' -e "select i.mac, i.name, IF(v.default_network,v.default_network,0), IF(i.configureGateway,i.configureGateway,0), i.ip, IF(n.gateway,n.gateway,0), IF(n.netmask,n.netmask,0), IF(n.primary_dns,n.primary_dns,0), IF(n.secondary_dns,n.secondary_dns,0) from ip_pool_management i, rasd_management r, network_configuration n, vlan_network v where i.idManagement = r.idManagement AND r.idVM IS NOT NULL AND i.vlan_network_id = v.vlan_network_id AND v.network_configuration_id = n.network_configuration_id;"')
 
     for l in c.readlines():
         if ":" in l:
